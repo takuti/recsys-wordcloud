@@ -1,9 +1,13 @@
 import requests
 import time
 import csv
+import os
 from bs4 import BeautifulSoup
 from selenium import webdriver
 
+
+dirname = os.path.dirname(__file__)
+CSV_DIR = os.path.join(dirname, '../resources/csv/')
 
 proceeding_urls = {
     2008: 'https://dl.acm.org/doi/proceedings/10.1145/1454008',
@@ -59,7 +63,8 @@ def get_abstract(url):
 
 def process_year(year):
     print('Year: {}'.format(year))
-    csvfile = open('csv/{}.csv'.format(year), 'w', newline='')
+    path = os.path.join(CSV_DIR, '{}.csv'.format(year))
+    csvfile = open(path, 'w', newline='')
     writer = csv.writer(csvfile)
     writer.writerow(['url', 'title', 'abstract'])
     for url, title in get_article_links(proceeding_urls[year]):
