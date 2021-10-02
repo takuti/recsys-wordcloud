@@ -30,18 +30,18 @@ def extend_stopwords(corpus, stopwords, max_features=1024):
 def run():
     stopwords = build_base_stopwords()
     corpus = {}
-    for y in range(2008, 2022):
-        print(y)
+    for year in range(2008, 2022):
+        print(year)
         abstracts = []
-        path = os.path.join(CSV_DIR, '{}.csv'.format(y))
+        path = os.path.join(CSV_DIR, '{}.csv'.format(year))
         with open(path, 'r', newline='') as f:
             reader = csv.DictReader(f)
             for row in reader:
                 abstracts.append(row['abstract'])
-        corpus[y] = ' '.join(abstracts)
+        corpus[year] = ' '.join(abstracts)
     stopwords = extend_stopwords(list(corpus.values()), stopwords)
 
-    for y, source in corpus.items():
+    for year, source in corpus.items():
         wc = WordCloud(
             width=800,
             height=400,
@@ -49,7 +49,7 @@ def run():
             background_color='white',
             colormap='Set2'
         ).generate(source)
-        wc.to_file(os.path.join(OUT_DIR, '{}.png'.format(y)))
+        wc.to_file(os.path.join(OUT_DIR, '{}.png'.format(year)))
 
 
 if __name__ == '__main__':
