@@ -20,9 +20,12 @@ def build_base_stopwords():
     return stopwords
 
 
-def extend_stopwords(corpus, stopwords, max_features=1024):
-    vectorizer = TfidfVectorizer(stop_words=stopwords,
-                                 max_features=max_features)
+def extend_stopwords(corpus, stopwords):
+    vectorizer = TfidfVectorizer(
+        stop_words=stopwords,
+        max_features=2048,
+        ngram_range=(1, 2)
+    )
     vectorizer.fit(corpus)
     return stopwords | vectorizer.stop_words_
 
@@ -47,7 +50,7 @@ def run():
             height=400,
             stopwords=stopwords,
             background_color='white',
-            colormap='Set2'
+            colormap='bone'
         ).generate(source)
         wc.to_file(os.path.join(OUT_DIR, '{}.png'.format(year)))
 
