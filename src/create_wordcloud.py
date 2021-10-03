@@ -55,5 +55,28 @@ def run():
         wc.to_file(os.path.join(OUT_DIR, '{}.png'.format(year)))
 
 
+def run_single_year(year):
+    stopwords = build_base_stopwords()
+
+    abstracts = []
+    path = os.path.join(CSV_DIR, '{}.csv'.format(year))
+    with open(path, 'r', newline='') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            abstracts.append(row['abstract'])
+
+    stopwords = extend_stopwords(abstracts, stopwords)
+
+    wc = WordCloud(
+        width=800,
+        height=400,
+        stopwords=stopwords,
+        background_color='white',
+        colormap='bone'
+    ).generate(' '.join(abstracts))
+    wc.to_file(os.path.join(OUT_DIR, '{}.png'.format(year)))
+
+
 if __name__ == '__main__':
     run()
+    # run_single_year(2021)
