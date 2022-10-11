@@ -1,3 +1,4 @@
+import argparse
 import csv
 import os
 import requests
@@ -11,6 +12,8 @@ CSV_DIR = os.path.join(dirname, '../resources/csv/')
 OUT_DIR = os.path.join(dirname, '../out/')
 
 STOPWORDS_GIST = 'https://gist.githubusercontent.com/rg089/35e00abf8941d72d419224cfd5b5925d/raw/12d899b70156fd0041fa9778d657330b024b959c/stopwords.txt'
+
+YEAR_RANGE = range(2008, 2023)
 
 
 def build_base_stopwords():
@@ -33,7 +36,7 @@ def extend_stopwords(corpus, stopwords):
 def run():
     stopwords = build_base_stopwords()
     corpus = {}
-    for year in range(2008, 2022):
+    for year in YEAR_RANGE:
         print(year)
         abstracts = []
         path = os.path.join(CSV_DIR, '{}.csv'.format(year))
@@ -78,5 +81,12 @@ def run_single_year(year):
 
 
 if __name__ == '__main__':
-    run()
-    # run_single_year(2021)
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--year', type=int)
+    args = parser.parse_args()
+    if not args.year:
+        run()
+    elif args.year in YEAR_RANGE:
+        run_single_year(args.year)
+    else:
+        raise Exception(f'unsupported year "{args.year}"')
