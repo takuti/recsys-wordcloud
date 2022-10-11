@@ -24,6 +24,7 @@ proceeding_urls = {
     2019: 'https://dl.acm.org/doi/proceedings/10.1145/3298689',
     2020: 'https://dl.acm.org/doi/proceedings/10.1145/3383313',
     2021: 'https://dl.acm.org/doi/proceedings/10.1145/3460231',
+    2022: 'https://dl.acm.org/doi/proceedings/10.1145/3523227',
 }
 
 
