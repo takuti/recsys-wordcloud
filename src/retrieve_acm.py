@@ -34,13 +34,17 @@ def get_article_links(root_url):
 
     time.sleep(1)
 
-    sections = driver.find_elements_by_xpath("//a[contains(@class, 'section__title') and (@aria-expanded='false')]")
+    sections = driver.find_elements(
+        'xpath',
+        "//a[contains(@class, 'section__title') and (@aria-expanded='false')]")
 
     for section in sections:
         section.click()  # expand all artcile sections
         time.sleep(1)
 
-    titles = driver.find_elements_by_xpath("//a[ancestor::h5[contains(@class, 'issue-item__title')]]")
+    titles = driver.find_elements(
+        'xpath',
+        "//a[ancestor::h5[contains(@class, 'issue-item__title')]]")
     for title in titles:
         yield title.get_attribute('href'), title.get_attribute('innerText')
 
