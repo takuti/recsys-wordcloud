@@ -1,3 +1,4 @@
+import argparse
 import requests
 import time
 import csv
@@ -77,10 +78,16 @@ def process_year(year):
         writer.writerow([url, title, get_abstract(url)])
 
 
-def run():
-    for year in proceeding_urls.keys():
+def run(target_years):
+    for year in target_years:
+        assert year in proceeding_urls, f'unknown year "{year}"'
         process_year(year)
 
 
 if __name__ == '__main__':
-    run()
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--years', nargs='+', type=int)
+    args = parser.parse_args()
+    target_years = list(proceeding_urls.keys()) if not args.years \
+        else args.years
+    run(target_years)
