@@ -11,14 +11,24 @@ STOPWORDS_FILE = os.path.join(dirname, '../resources/stopwords.txt')
 CSV_DIR = os.path.join(dirname, '../resources/csv/')
 OUT_DIR = os.path.join(dirname, '../out/')
 
-STOPWORDS_GIST = 'https://gist.githubusercontent.com/rg089/35e00abf8941d72d419224cfd5b5925d/raw/12d899b70156fd0041fa9778d657330b024b959c/stopwords.txt'
+STOPWORDS_URLS = [
+    'https://gist.githubusercontent.com/rg089/35e00abf8941d72d419224cfd5b5925d/raw/12d899b70156fd0041fa9778d657330b024b959c/stopwords.txt',
+    # https://github.com/SerhadS/TechNet
+    # https://www.researchgate.net/publication/341926808_Stopwords_in_Technical_Language_Processing
+    'https://raw.githubusercontent.com/SerhadS/TechNet/master/additional_stopwords/TN_additional_stopwords.txt',
+    'https://raw.githubusercontent.com/SerhadS/TechNet/master/additional_stopwords/USPTO_stopwords_en.txt',
+    'https://raw.githubusercontent.com/SerhadS/TechNet/master/additional_stopwords/nltk_stopwords_en.txt',
+    'https://raw.githubusercontent.com/SerhadS/TechNet/master/additional_stopwords/technical_stopwords.txt'
+]
 
 YEAR_RANGE = range(2008, 2023)
 
 
 def build_base_stopwords():
-    stopwords_list = requests.get(STOPWORDS_GIST).content
-    stopwords = set(stopwords_list.decode().splitlines())
+    stopwords = set()
+    for url in STOPWORDS_URLS:
+        stopwords_list = requests.get(url).content
+        stopwords |= set(stopwords_list.decode().splitlines())
     stopwords |= set(open(STOPWORDS_FILE, 'r').read().rstrip().split('\n'))
     return stopwords
 
